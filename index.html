@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buzzer</title>
+  <title>Quiz Buzzer</title>
   <style>
     body {
       margin: 0;
@@ -12,11 +12,17 @@
       justify-content: center;
       align-items: center;
       background-color: black;
+      font-family: sans-serif;
     }
 
-    #buzzer {
-      width: 200px;
-      height: 200px;
+    .buzzer-container {
+      display: flex;
+      gap: 40px;
+    }
+
+    .buzzer {
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       background-color: red;
       border: 5px solid white;
@@ -24,29 +30,48 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: sans-serif;
-      font-size: 24px;
+      font-size: 18px;
       color: white;
       user-select: none;
+      transition: transform 0.1s, box-shadow 0.1s;
     }
 
-    #buzzer:active {
-      transform: scale(0.95);
+    .buzzer:active {
+      transform: scale(0.9);
+      box-shadow: 0 0 20px white;
+    }
+
+    .buzzer.active {
+      box-shadow: 0 0 40px yellow;
     }
   </style>
 </head>
 <body>
-  <div id="buzzer">BUZZ</div>
+  <div class="buzzer-container">
+    <div class="buzzer" id="buzzer1">Player 1</div>
+    <div class="buzzer" id="buzzer2">Player 2</div>
+    <div class="buzzer" id="buzzer3">Player 3</div>
+    <div class="buzzer" id="buzzer4">Player 4</div>
+  </div>
 
   <audio id="buzzSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
 
   <script>
-    const buzzer = document.getElementById('buzzer');
+    const buzzers = document.querySelectorAll('.buzzer');
     const buzzSound = document.getElementById('buzzSound');
 
-    buzzer.addEventListener('click', () => {
-      buzzSound.currentTime = 0; // Restart sound if clicked multiple times
-      buzzSound.play();
+    buzzers.forEach(buzzer => {
+      buzzer.addEventListener('click', () => {
+        // Reset all buzzers
+        buzzers.forEach(b => b.classList.remove('active'));
+
+        // Activate clicked buzzer
+        buzzer.classList.add('active');
+
+        // Play sound
+        buzzSound.currentTime = 0;
+        buzzSound.play();
+      });
     });
   </script>
 </body>
